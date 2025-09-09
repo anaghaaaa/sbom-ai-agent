@@ -481,3 +481,13 @@ python metadata_enrichment.py
 
 ![20250909-0607-54 4051766](https://github.com/user-attachments/assets/8a99b9a7-796a-4425-958d-276dbe436cd0)
 
+NOTE : make sure that the excel file Enriched_BDBA_Scan is closed in system before you run command in terminal. Else, it fails with permission error.
+Since this error may occur, edit is made to the code to close the excel if open. 
+```python
+import os
+
+# Before saving
+if os.path.exists(output_file):
+    os.remove(output_file)
+```
+<img width="1477" height="746" alt="image" src="https://github.com/user-attachments/assets/0a81efb6-9321-4fda-92b3-f35e84dcf75f" />
