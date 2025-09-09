@@ -109,11 +109,14 @@ Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 -a----        09-09-2025     09:37              0 sbom_agent.py
 
-
+```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> notepad requirements.txt
-
+```
+```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> python --version
 Python 3.13.2
+```
+```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> Invoke-WebRequest -Uri https://bootstrap.pypa.io/get-pip.py -OutFile get-pip.py
 PS C:\Users\SESA754157\sbom-ai-agent> python get-pip.py
 Collecting pip
@@ -122,8 +125,41 @@ Downloading pip-25.2-py3-none-any.whl (1.8 MB)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 3.1 MB/s  0:00:00
 Installing collected packages: pip
 Successfully installed pip-25.2
+```
+```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> pip --version
 pip 25.2 from C:\Users\SESA754157\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip (python 3.13)
+Thanks for the update! Based on your screenshot, it looks like the file is still named **`SBoM Multiserver.xlsx`** and not yet renamed to **`BDBA_Scan.xlsx`**.
+
+---
+
+### ✅ Here's What to Do:
+
+1. **Go to the `data/` folder** in your project directory.
+2. **Rename the file** from:
+   ```
+   SBoM Multiserver.xlsx
+   ```
+   to:
+   ```
+   BDBA_Scan.xlsx
+   ```
+
+You can do this in File Explorer or by running this PowerShell command:
+
+```powershell
+Rename-Item -Path "data\SBoM Multiserver.xlsx" -NewName "BDBA_Scan.xlsx"
+```
+
+---
+
+Once renamed, run the script again:
+
+```powershell
+python sbom_agent.py
+```
+
+```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> pip install -r requirements.txt
 Collecting pandas (from -r requirements.txt (line 1))
   Downloading pandas-2.3.2-cp313-cp313-win_amd64.whl.metadata (19 kB)
@@ -184,7 +220,7 @@ Downloading et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
 Installing collected packages: pytz, urllib3, tzdata, typing-extensions, soupsieve, six, numpy, idna, et-xmlfile, colorama, charset_normalizer, certifi, tqdm, requests, python-dateutil, openpyxl, beautifulsoup4, pandas
 Successfully installed beautifulsoup4-4.13.5 certifi-2025.8.3 charset_normalizer-3.4.3 colorama-0.4.6 et-xmlfile-2.0.0 idna-3.10 numpy-2.3.2 openpyxl-3.1.5 pandas-2.3.2 python-dateutil-2.9.0.post0 pytz-2025.2 requests-2.32.5 six-1.17.0 soupsieve-2.8 tqdm-4.67.1 typing-extensions-4.15.0 tzdata-2025.2 urllib3-2.5.0
 PS C:\Users\SESA754157\sbom-ai-agent>
-
+```
 ## 🧩 Stage 2: File Parsing & Deduplication
 
 We’ll write code in `sbom_agent.py` to:
