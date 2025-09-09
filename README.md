@@ -129,34 +129,6 @@ Successfully installed pip-25.2
 ```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> pip --version
 pip 25.2 from C:\Users\SESA754157\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip (python 3.13)
-Thanks for the update! Based on your screenshot, it looks like the file is still named **`SBoM Multiserver.xlsx`** and not yet renamed to **`BDBA_Scan.xlsx`**.
-
----
-
-### ✅ Here's What to Do:
-
-1. **Go to the `data/` folder** in your project directory.
-2. **Rename the file** from:
-   ```
-   SBoM Multiserver.xlsx
-   ```
-   to:
-   ```
-   BDBA_Scan.xlsx
-   ```
-
-You can do this in File Explorer or by running this PowerShell command:
-
-```powershell
-Rename-Item -Path "data\SBoM Multiserver.xlsx" -NewName "BDBA_Scan.xlsx"
-```
-
----
-
-Once renamed, run the script again:
-
-```powershell
-python sbom_agent.py
 ```
 
 ```powershell
