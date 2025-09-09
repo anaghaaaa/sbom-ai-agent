@@ -358,7 +358,7 @@ Detect package ecosystem (e.g., Python, Java, JS).
   - Update DataFrame row-by-row.
 
 Metadata Enrichment Script using GitHub, PyPI, SPDX, and fallback logic to be saved as: metadata_enrichment.py
-
+!!!!-- NOTE: this code is basic--!!!!
 ```python
 import pandas as pd
 import requests
@@ -607,7 +607,34 @@ if __name__ == "__main__":
     main()
 
 ```
-run now in powershell 
+now I've refactored it to support **multi-source metadata enrichment** using:
+
+- **PyPI**
+- **GitHub**
+- **Docker Hub**
+- Microsoft SBOM Tool & Google Artifact Analysis
+
+It now:
+- Normalizes metadata into your preferred format.
+- Adds fallback logic and SPDX license type mapping.
+- Preserves API rate limit handling.
+License Type Detection:
+
+Uses SPDX license list to classify licenses.
+Proprietary licenses are detected via keyword matching.
+GitHub API:
+
+Extracts author and license info from repository metadata.
+PyPI API:
+
+Extracts author, license, and version info from Python package metadata.
+Maven Central:
+
+Uses Solr search API to get Java package metadata.
+NPM Registry:
+
+Extracts author and license info from Node.js package metadata.
+
 ```powershell
 python metadata_enrichment.py
 ```
