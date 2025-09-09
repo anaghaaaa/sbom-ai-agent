@@ -257,3 +257,33 @@ PS C:\Users\SESA754157\sbom-ai-agent>
 ```
 ---
 ## Stage 3: Metadata Enrichment — where we’ll start building the logic to search and fill in missing fields like AuthorName, Supplier, License, etc.
+
+For each unique component-version pair, we want to automatically search and fill in:
+
+✅ Author Name
+✅ Supplier Name
+✅ License
+✅ License Type
+✅ Open Source vs Proprietary
+
+🔹 Step 3.1: Load Cleaned Data
+We’ll read from Cleaned_BDBA_Scan.xlsx.
+
+🔹 Step 3.2: Search Metadata Online
+Use APIs or web scraping to find metadata:
+
+GitHub API (for open source components)
+SPDX License List
+PyPI, Maven, NPM, Docker Hub, etc.
+🔹 Step 3.3: Fill Missing Columns
+Add columns to the DataFrame:
+['AuthorName', 'Supplier name', 'Open source vs proprietary', 'License', 'License type']
+🔹 Step 3.4: Save Final Enriched SBOM
+Export to Excel: Enriched_BDBA_Scan.xlsx
+
+### Let's Start with Step 3.1 & 3.3
+the code does following - 
+- Loads Cleaned_BDBA_Scan.xlsx
+- Adds empty columns for metadata
+- Prepares the structure for enrichment
+### Then we’ll move to Step 3.2: Web Search & API Integration.
