@@ -203,8 +203,8 @@ import pandas as pd
 import os
 
 # Define input and output file paths
-input_file = "data/BDBA_Scan.xlsx"
-output_file = "data/Cleaned_BDBA_Scan.xlsx"
+input_file = "data/BDBA_Scan.csv"
+output_file = "data/Cleaned_BDBA_Scan.csv"
 
 # Check if input file exists
 if not os.path.exists(input_file):
@@ -212,8 +212,8 @@ if not os.path.exists(input_file):
     print("Please make sure the file is placed inside the 'data' folder.")
 else:
     try:
-        # Read the SBOM sheet from the Excel file
-        df = pd.read_excel(input_file, sheet_name="SBOM", engine="openpyxl")
+        # Read the CSV file
+        df = pd.read_csv(input_file)
 
         # Extract 'Component Name' and 'Version String' columns
         df_clean = df[['Component Name', 'Version String']]
@@ -221,13 +221,14 @@ else:
         # Drop duplicate component-version pairs
         df_unique = df_clean.drop_duplicates()
 
-        # Save the cleaned data to a new Excel file
-        df_unique.to_excel(output_file, index=False)
+        # Save the cleaned data to a new CSV file
+        df_unique.to_csv(output_file, index=False)
 
         print(f"✅ Cleaned SBOM saved to {output_file}")
 
     except Exception as e:
         print(f"❌ Error while processing the file: {e}")
+
 ```
 
 ### 🧪 How to Run
@@ -241,6 +242,8 @@ Then run:
 ```powershell
 python sbom_agent.py
 ```
-
+PS C:\Users\SESA754157\sbom-ai-agent> python sbom_agent.py
+✅ Cleaned SBOM saved to data/Cleaned_BDBA_Scan.csv
+PS C:\Users\SESA754157\sbom-ai-agent>
 ---
 ## Stage 3: Metadata Enrichment — where we’ll start building the logic to search and fill in missing fields like AuthorName, Supplier, License, etc.
