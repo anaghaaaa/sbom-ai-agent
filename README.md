@@ -286,7 +286,7 @@ the code does following -
 - Loads Cleaned_BDBA_Scan.csv
 - Adds empty columns for metadata
 - Prepares the structure for enrichment
-### Then we’ll move to Step 3.2: Web Search & API Integration.
+
 
 create enrich_sbom.py -- Adds metadata enrichment columns and logic
 <img width="1007" height="551" alt="image" src="https://github.com/user-attachments/assets/2328c025-1d1b-4420-b7b5-a12796393dc8" />
@@ -326,3 +326,11 @@ PS C:\Users\SESA754157\sbom-ai-agent> python enrich_sbom.py
 ✅ Enriched SBOM structure saved to data/Enriched_BDBA_Scan.csv
 PS C:\Users\SESA754157\sbom-ai-agent>
 ```
+### Then we’ll move to Step 3.2: Web Search & API Integration.
+For each component-version pair, we’ll try to fetch:
+
+1.Author Name
+2.Supplier Name
+3.License
+4.License Type
+5.Open Source vs Proprietary
