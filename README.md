@@ -29,16 +29,16 @@ o	License type
 •	Matches your preferred format:\ Supplier name, AuthorName, Component Name, Version String, Open source vs proprietary, License, License type
 
 🛠️ Technologies You Can Use
-Task	Tools
-File parsing	pandas, openpyxl
-Web search	requests, BeautifulSoup, SPDX API, GitHub API
-Deduplication	pandas
-Output	pandas.to_excel()
-Automation	Python scripts, or integrate into a CI/CD pipeline
-UI (optional)	Streamlit or Flask for a simple web interface
+-  Task	Tools
+- File parsing	pandas, openpyxl
+- Web search	requests, BeautifulSoup, SPDX API, GitHub API
+- Deduplication	pandas
+- Output	pandas.to_excel()
+- Automation	Python scripts, or integrate into a CI/CD pipeline
+- UI (optional)	Streamlit or Flask for a simple web interface
 ________________________________________
 🧪 Prototype Agent Flow (Python-based)
-# Pseudocode
+## Pseudocode
 load_sbom_file()
 clean_duplicates()
 for each component-version:
