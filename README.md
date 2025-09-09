@@ -102,12 +102,12 @@ Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 -a----        09-09-2025     09:37              0 requirements.txt
 
-PS C:\Users\SESA754157\sbom-ai-agent> New-Item -Path . -Name "sbom_agent.py" -ItemType "File"    Directory: C:\Users\SESA754157\sbom-ai-agent
+PS C:\Users\SESA754157\sbom-ai-agent> New-Item -Path . -Name "clean_sbom.py" -ItemType "File"    Directory: C:\Users\SESA754157\sbom-ai-agent
 
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
--a----        09-09-2025     09:37              0 sbom_agent.py
+-a----        09-09-2025     09:37              0 clean_sbom.py
 
 ```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> notepad requirements.txt
@@ -195,7 +195,7 @@ PS C:\Users\SESA754157\sbom-ai-agent>
 ```
 ## 🧩 Stage 2: File Parsing & Deduplication
 
-We’ll write code in `sbom_agent.py` to:
+We’ll write code in `clean_sbom.py` to:
 
 1. Load the SBOM Excel file.
 2. Extract `Component Name` and `Version String`.
@@ -204,7 +204,7 @@ We’ll write code in `sbom_agent.py` to:
 
 ---
 
-### ✅ **`sbom_agent.py`**
+### ✅ **`clean_sbom.py`**
 
 ```python
 import pandas as pd
@@ -248,10 +248,10 @@ Make sure:
 Then run:
 
 ```powershell
-python sbom_agent.py
+python clean_sbom.py
 ```
 ```powershell
-PS C:\Users\SESA754157\sbom-ai-agent> python sbom_agent.py
+PS C:\Users\SESA754157\sbom-ai-agent> python clean_sbom.py
 ✅ Cleaned SBOM saved to data/Cleaned_BDBA_Scan.csv
 PS C:\Users\SESA754157\sbom-ai-agent>
 ```
@@ -267,7 +267,7 @@ For each unique component-version pair, we want to automatically search and fill
 ✅ Open Source vs Proprietary
 
 🔹 Step 3.1: Load Cleaned Data
-We’ll read from Cleaned_BDBA_Scan.xlsx.
+We’ll read from Cleaned_BDBA_Scan.csv
 
 🔹 Step 3.2: Search Metadata Online
 Use APIs or web scraping to find metadata:
@@ -279,11 +279,11 @@ PyPI, Maven, NPM, Docker Hub, etc.
 Add columns to the DataFrame:
 ['AuthorName', 'Supplier name', 'Open source vs proprietary', 'License', 'License type']
 🔹 Step 3.4: Save Final Enriched SBOM
-Export to Excel: Enriched_BDBA_Scan.xlsx
+Export to Excel: Enriched_BDBA_Scan.csv
 
 ### Let's Start with Step 3.1 & 3.3
 the code does following - 
-- Loads Cleaned_BDBA_Scan.xlsx
+- Loads Cleaned_BDBA_Scan.csv
 - Adds empty columns for metadata
 - Prepares the structure for enrichment
 ### Then we’ll move to Step 3.2: Web Search & API Integration.
