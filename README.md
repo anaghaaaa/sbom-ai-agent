@@ -1,7 +1,60 @@
 # sbom-ai-agent
 AI agent to automate SBOM and FOSS metadata enrichment from BDBA scan reports
 
-##setting up environment
+
+Creating an AI agent to automate your SBOM and FOSS work involves building a system that can:
+1.	Ingest and clean data from BDBA scan reports.
+2.	Enrich metadata by searching the internet.
+3.	Output a complete Excel file with all required fields.
+
+ ## high-level architecture for the AI agent:
+1. Input Handler
+•	Accepts CSV or Excel files (BDBA scan reports).
+•	Parses and extracts Component Name and Version String.
+2. Deduplication Engine
+•	Removes duplicate entries.
+•	Keeps one entry per unique component-version pair.
+3. Metadata Enrichment Module
+•	Uses APIs or web scraping to fetch:
+o	Author name
+o	Supplier name
+o	License
+o	License type
+•	Sources: GitHub, SPDX, Maven Central, PyPI, NPM, etc.
+4. Validation & Normalization
+•	Ensures consistent formatting (e.g., license names).
+•	Flags unknown or ambiguous entries for manual review.
+5. Output Generator
+•	Writes the enriched data to an Excel file.
+•	Matches your preferred format:\ Supplier name, AuthorName, Component Name, Version String, Open source vs proprietary, License, License type
+
+🛠️ Technologies You Can Use
+Task	Tools
+File parsing	pandas, openpyxl
+Web search	requests, BeautifulSoup, SPDX API, GitHub API
+Deduplication	pandas
+Output	pandas.to_excel()
+Automation	Python scripts, or integrate into a CI/CD pipeline
+UI (optional)	Streamlit or Flask for a simple web interface
+________________________________________
+🧪 Prototype Agent Flow (Python-based)
+# Pseudocode
+load_sbom_file()
+clean_duplicates()
+for each component-version:
+    metadata = search_metadata_online(component, version)
+    enrich_row(metadata)
+save_to_excel()
+________________________________________
+🚀 Deployment Options
+•	Local script: Run manually or via cron job.
+•	Web app: Use Flask or FastAPI for a UI.
+•	CI/CD integration: Trigger on new scan uploads.
+•	Agent in Azure: Deploy as a Function App or Logic App.
+________________________________________
+
+
+##Stage 1 : setting up environment
 
 Windows PowerShell
 Copyright (C) Microsoft Corporation. All rights reserved.
@@ -132,3 +185,62 @@ Installing collected packages: pytz, urllib3, tzdata, typing-extensions, soupsie
 Successfully installed beautifulsoup4-4.13.5 certifi-2025.8.3 charset_normalizer-3.4.3 colorama-0.4.6 et-xmlfile-2.0.0 idna-3.10 numpy-2.3.2 openpyxl-3.1.5 pandas-2.3.2 python-dateutil-2.9.0.post0 pytz-2025.2 requests-2.32.5 six-1.17.0 soupsieve-2.8 tqdm-4.67.1 typing-extensions-4.15.0 tzdata-2025.2 urllib3-2.5.0
 PS C:\Users\SESA754157\sbom-ai-agent>
 
+## 🧩 Stage 2: File Parsing & Deduplication
+
+We’ll write code in `sbom_agent.py` to:
+
+1. Load the SBOM Excel file.
+2. Extract `Component Name` and `Version String`.
+3. Remove duplicates (keeping unique component-version pairs).
+4. Save the cleaned data to a new Excel file.
+
+---
+
+### ✅ **`sbom_agent.py`**
+
+```python
+import pandas as pd
+import os
+
+# Define input and output file paths
+input_file = "data/BDBA_Scan.xlsx"
+output_file = "data/Cleaned_BDBA_Scan.xlsx"
+
+# Check if input file exists
+if not os.path.exists(input_file):
+    print(f"❌ Input file not found: {input_file}")
+    print("Please make sure the file is placed inside the 'data' folder.")
+else:
+    try:
+        # Read the SBOM sheet from the Excel file
+        df = pd.read_excel(input_file, sheet_name="SBOM", engine="openpyxl")
+
+        # Extract 'Component Name' and 'Version String' columns
+        df_clean = df[['Component Name', 'Version String']]
+
+        # Drop duplicate component-version pairs
+        df_unique = df_clean.drop_duplicates()
+
+        # Save the cleaned data to a new Excel file
+        df_unique.to_excel(output_file, index=False)
+
+        print(f"✅ Cleaned SBOM saved to {output_file}")
+
+    except Exception as e:
+        print(f"❌ Error while processing the file: {e}")
+```
+
+### 🧪 How to Run
+
+Make sure:
+- Your Excel file is named `BDBA_Scan.xlsx`
+- It’s placed inside the `data/` folder
+
+Then run:
+
+```powershell
+python sbom_agent.py
+```
+
+---
+## Stage 3: Metadata Enrichment — where we’ll start building the logic to search and fill in missing fields like AuthorName, Supplier, License, etc.
