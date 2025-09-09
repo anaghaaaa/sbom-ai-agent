@@ -334,3 +334,25 @@ For each component-version pair, we’ll try to fetch:
 3.License
 4.License Type
 5.Open Source vs Proprietary
+
+We'll use the following sources:
+
+## Sources and Their Uses
+
+| Source                  | Use                                      |
+|-------------------------|------------------------------------------|
+| GitHub API             | Author, License, Open Source            |
+| SPDX License List      | Normalize license names and types        |
+| PyPI / NPM / Maven Central | Supplier, License                     |
+| Fallback Web Search    | If APIs fail, use scraping or search hints |
+
+##  Step-by-Step Plan
+Detect package ecosystem (e.g., Python, Java, JS).
+- Query relevant API:
+  - PyPI: https://pypi.org/pypi/{package}/json
+  - NPM: https://registry.npmjs.org/{package}
+  - Maven: https://search.maven.org/solrsearch/select?q={package}
+  - GitHub: Use repo name to call https://api.github.com/repos/{owner}/{repo}
+  - Extract metadata from API response.
+  - Fallback to web search if API fails.
+  - Update DataFrame row-by-row.
