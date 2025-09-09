@@ -478,3 +478,6 @@ run now in powershell
 ```powershell
 python metadata_enrichment.py
 ```
+
+![20250909-0607-54 4051766](https://github.com/user-attachments/assets/8a99b9a7-796a-4425-958d-276dbe436cd0)
+
