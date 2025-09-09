@@ -242,8 +242,10 @@ Then run:
 ```powershell
 python sbom_agent.py
 ```
+```powershell
 PS C:\Users\SESA754157\sbom-ai-agent> python sbom_agent.py
 ✅ Cleaned SBOM saved to data/Cleaned_BDBA_Scan.csv
 PS C:\Users\SESA754157\sbom-ai-agent>
+```
 ---
 ## Stage 3: Metadata Enrichment — where we’ll start building the logic to search and fill in missing fields like AuthorName, Supplier, License, etc.
