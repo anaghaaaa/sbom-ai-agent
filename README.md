@@ -287,3 +287,42 @@ the code does following -
 - Adds empty columns for metadata
 - Prepares the structure for enrichment
 ### Then we’ll move to Step 3.2: Web Search & API Integration.
+
+create enrich_sbom.py -- Adds metadata enrichment columns and logic
+<img width="1007" height="551" alt="image" src="https://github.com/user-attachments/assets/2328c025-1d1b-4420-b7b5-a12796393dc8" />
+
+```python
+import pandas as pd
+import os
+
+# File paths
+input_file = "data/Cleaned_BDBA_Scan.csv"
+output_file = "data/Enriched_BDBA_Scan.csv"
+
+# Load cleaned SBOM
+if not os.path.exists(input_file):
+    print(f"❌ File not found: {input_file}")
+else:
+    df = pd.read_csv(input_file)
+
+    # Add empty columns for enrichment
+    enrichment_fields = [
+        'AuthorName',
+        'Supplier name',
+        'Open source vs proprietary',
+        'License',
+        'License type'
+    ]
+
+    for field in enrichment_fields:
+        df[field] = ""
+
+    # Save enriched structure
+    df.to_csv(output_file, index=False)
+    print(f"✅ Enriched SBOM structure saved to {output_file}")
+```
+```powershell
+PS C:\Users\SESA754157\sbom-ai-agent> python enrich_sbom.py
+✅ Enriched SBOM structure saved to data/Enriched_BDBA_Scan.csv
+PS C:\Users\SESA754157\sbom-ai-agent>
+```
