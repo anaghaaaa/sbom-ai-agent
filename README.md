@@ -356,3 +356,125 @@ Detect package ecosystem (e.g., Python, Java, JS).
   - Extract metadata from API response.
   - Fallback to web search if API fails.
   - Update DataFrame row-by-row.
+
+Metadata Enrichment Script using GitHub, PyPI, SPDX, and fallback logic to be saved as: metadata_enrichment.py
+
+```python
+import pandas as pd
+import requests
+import time
+
+# Load cleaned SBOM
+input_file = "data/Cleaned_BDBA_Scan.csv"
+output_file = "data/Enriched_BDBA_Scan.csv"
+
+# SPDX license types (simplified)
+SPDX_LICENSE_TYPES = {
+    "MIT": "Permissive",
+    "Apache-2.0": "Permissive",
+    "GPL-3.0": "Copyleft",
+    "BSD-3-Clause": "Permissive",
+    "LGPL-2.1": "Weak Copyleft",
+    "Proprietary": "Proprietary"
+}
+
+def get_pypi_metadata(package):
+    try:
+        url = f"https://pypi.org/pypi/{package}/json"
+        res = requests.get(url, timeout=5)
+        if res.status_code == 200:
+            data = res.json()
+            info = data.get("info", {})
+            return {
+                "AuthorName": info.get("author", ""),
+                "Supplier name": info.get("maintainer", info.get("author", "")),
+                "License": info.get("license", ""),
+                "Open source vs proprietary": "Open Source"
+            }
+    except Exception:
+        pass
+    return {}
+
+def get_github_metadata(repo_url):
+    try:
+        if "github.com" not in repo_url:
+            return {}
+        parts = repo_url.split("github.com/")[-1].split("/")
+        if len(parts) < 2:
+            return {}
+        owner, repo = parts[0], parts[1]
+        api_url = f"https://api.github.com/repos/{owner}/{repo}"
+        res = requests.get(api_url, timeout=5)
+        if res.status_code == 200:
+            data = res.json()
+            license_info = data.get("license", {})
+            return {
+                "AuthorName": owner,
+                "Supplier name": owner,
+                "License": license_info.get("spdx_id", ""),
+                "Open source vs proprietary": "Open Source"
+            }
+    except Exception:
+        pass
+    return {}
+
+def enrich_row(component, version):
+    metadata = {}
+
+    # Try PyPI first
+    metadata = get_pypi_metadata(component.lower())
+    if not metadata:
+        # Try GitHub if PyPI fails
+        metadata = get_github_metadata(component)
+
+    # Fallback values
+    metadata.setdefault("AuthorName", "")
+    metadata.setdefault("Supplier name", "")
+    metadata.setdefault("License", "")
+    metadata.setdefault("Open source vs proprietary", "Unknown")
+
+    # License type via SPDX
+    license_id = metadata.get("License", "")
+    metadata["License type"] = SPDX_LICENSE_TYPES.get(license_id, "Unknown")
+
+    return metadata
+
+def main():
+    df = pd.read_csv(input_file)
+
+    # Add enrichment columns
+    enrichment_fields = [
+        'AuthorName',
+        'Supplier name',
+        'Open source vs proprietary',
+        'License',
+        'License type'
+    ]
+    for field in enrichment_fields:
+        if field not in df.columns:
+            df[field] = ""
+
+    # Enrich each row
+    for idx, row in df.iterrows():
+        component = row['Component Name']
+        version = row['Version String']
+        metadata = enrich_row(component, version)
+
+        for key in enrichment_fields:
+            df.at[idx, key] = metadata.get(key, "")
+
+        print(f"✅ Enriched: {component} {version}")
+        time.sleep(1)  # Respect API rate limits
+
+    # Save enriched SBOM
+    df.to_csv(output_file, index=False)
+    print(f"✅ Final enriched SBOM saved to {output_file}")
+
+if __name__ == "__main__":
+    main()
+```
+
+run now in powershell 
+```powershell
+python metadata_enrichment.py
+```
